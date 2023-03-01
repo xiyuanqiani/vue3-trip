@@ -23,6 +23,14 @@ const router = createRouter({
             path:"/order",
             component:()=>import("@/views/order/order.vue")
         },
+        {
+            path:"/city",
+            component:()=>import("@/views/city/city.vue"),
+            // 转到city时隐藏tabbar
+            meta:{
+                hideTabbar:true
+            }
+        },
     ]
 })
 

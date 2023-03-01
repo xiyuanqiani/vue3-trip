@@ -2,8 +2,23 @@
     --primary--color:#ff9854;
     /* 全局修改变量 */
     /* --van-tabbar-item-icon-size:30px; */
+
+    /* 修改search图标颜色 */
+    --van-search-left-icon-color:var(--primary--color) !important;
 }
 
 body{
     font-size: 14px;
+}
+
+/* 利用css跳转到city时隐藏tabbar */
+/* .top-page{
+    position: relative;
+    height: 100vh;
+    z-index: 9;
+    background-color: #fff;
+    overflow-y: auto;
+} */
+.bottom-gray-line{
+    border-bottom: 1px solid #f3f3f3;
 }
