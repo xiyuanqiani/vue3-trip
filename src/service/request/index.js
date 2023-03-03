@@ -2,7 +2,7 @@ import axios from "axios";
 import { BASE_URL,TIMEOUT } from "./config";
 
 class HYRequest{
-    constructor(baseURL,timeout=10000){
+    constructor(baseURL,timeout=50000){
         this.instance = axios.create({
             baseURL,
             timeout

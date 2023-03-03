@@ -13,14 +13,14 @@
       <div class="start">
         <div class="date">
           <span class="tip"> 入住</span>
-          <span class="time">{{ startDate }}</span>
+          <span class="time">{{ startDateStr }}</span>
         </div>
       </div>
       <div class="stay">共{{ stayCount }}晚</div>
       <div class="end">
         <div class="date">
           <span class="tip">离店</span>
-          <span class="time">{{ endDate }}</span>
+          <span class="time">{{ endDateStr }}</span>
         </div>
       </div>
     </div>
@@ -45,6 +45,10 @@
             </div>
         </template>
     </div>
+    <!-- 搜索按钮 -->
+    <div class="section search-btn">
+      <div class="btn" @click="searchClick">搜索</div>
+    </div>
   </div>
 </template>
 
@@ -54,7 +58,8 @@ import { useRouter } from "vue-router";
 import useCity from "../../../stores/modules/city";
 import useHome from "@/stores/modules/home.js"
 import { formatMonthDay, diffDays } from "@/utils/format_date.js";
-import { ref } from "vue";
+import { ref,computed } from "vue";
+import useMain from "../../../stores/modules/main";
 
 const positionClick = () => {
   navigator.geolocation.getCurrentPosition(
@@ -82,14 +87,14 @@ const cityStore = useCity();
 const { currentCity } = storeToRefs(cityStore);
 
 // 动态展示时间
-const nowDate = new Date();
-const newDate = new Date();
-newDate.setDate(nowDate.getDate() + 1);
+const mainStore = useMain()
+const {startDate,endDate} = storeToRefs(mainStore)
 
-const startDate = ref(formatMonthDay(nowDate));
-const endDate = ref(formatMonthDay(newDate));
+// 为什么用computed(依赖于store中的数据，用ref不合适)
+const startDateStr = computed(()=>formatMonthDay(startDate.value))
+const endDateStr = computed(()=>formatMonthDay(endDate.value))
 
-const stayCount = ref(diffDays(nowDate, newDate));
+const stayCount = ref((diffDays(startDate.value, endDate.value)))
 
 const showCalender = ref(false);
 const chooseDate = () => {
@@ -98,14 +103,26 @@ const chooseDate = () => {
 const onConfirm = (value) => {
   const selectStartDate = value[0];
   const selectEndDate = value[1];
+  mainStore.startDate = selectStartDate
+  mainStore.endDate = selectEndDate
   stayCount.value = diffDays(selectStartDate, selectEndDate);
-  startDate.value = formatMonthDay(selectStartDate);
-  endDate.value = formatMonthDay(selectEndDate);
   showCalender.value = false;
 };
 
 const homeStore = useHome()
 const {suggestCities} = storeToRefs(homeStore)
+
+// 搜索
+const searchClick = ()=>{
+  router.push({
+    path:'/search',
+    query:{
+      startDate:startDate.value,
+      endDate:endDate.value,
+      currentCity:currentCity.value.cityName
+    }
+  })
+}
 </script>
 
 <style lang="less" scoped>
@@ -163,10 +180,26 @@ const {suggestCities} = storeToRefs(homeStore)
     padding: 4px 8px;
     margin: 3px;
     border-radius: 14px;
+    line-height: 1;
   }
 }
 
-
+.search-btn {
+  .btn {
+    width: 342px;
+    height: 38px;
+    max-height: 50px;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 38px;
+    text-align: center;
+    border-radius: 20px;
+    color: #fff;
+    background-image: var(
+      --tjc-theme-linear-gradient
+    );
+  }
+}
 .section {
   display: flex;
   flex-wrap: wrap;

@@ -18,11 +18,13 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-//   devServer: {
-//     proxy: {
-//     '/api': {// 匹配所有以 '/api'开头的请求路径
-//       target: 'http://123.207.32.32:1888',// 代理目标的基础路径
-//     }
-//   }
-// }
+  server: {
+    proxy: {
+    '/api': {// 匹配所有以 '/api'开头的请求路径
+      target: 'http://123.207.32.32:1888',// 代理目标的基础路径
+      changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+    }
+  }
+}
 })

@@ -5,6 +5,9 @@
 
     /* 修改search图标颜色 */
     --van-search-left-icon-color:var(--primary--color) !important;
+    
+    /* 搜索按钮颜色 */
+      --tjc-theme-linear-gradient:linear-gradient(90deg, #fa8c1d, #fcaf3f)
 }
 
 body{
