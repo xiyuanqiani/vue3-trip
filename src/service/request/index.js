@@ -1,5 +1,8 @@
 import axios from "axios";
 import { BASE_URL,TIMEOUT } from "./config";
+import useMain from "../../stores/modules/main.js";
+
+const mainStore = useMain()
 
 class HYRequest{
     constructor(baseURL,timeout=50000){
@@ -7,7 +10,24 @@ class HYRequest{
             baseURL,
             timeout
         })
+
+        this.instance.interceptors.request.use(config=>{
+            mainStore.isLoading = true
+            return config
+        },err=>{
+            return err
+        })
+    
+        this.instance.interceptors.response.use(res=>{
+            mainStore.isLoading = false
+            return res
+        },err=>{
+            mainStore.isLoading = false
+            return err
+        })
     }
+
+    
 
     request(config){
         return new Promise((resolve,reject)=>{

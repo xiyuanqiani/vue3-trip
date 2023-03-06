@@ -23,15 +23,22 @@ import _ from 'lodash'
 // }
 
 // 2.将变量作为参数
-export default function scrollListen(){
+export default function scrollListen(scrollEl){
+    let el = window
     const isReachBottom = ref(false)
     const clientHeight = ref(0)
     const scrollHeight = ref(0)
     const scrollTop = ref(0)
     const scrollListenHandler = _.throttle(()=>{
-        clientHeight.value = document.documentElement.clientHeight
-        scrollHeight.value = document.documentElement.scrollHeight
-        scrollTop.value = document.documentElement.scrollTop
+        if(el === window){
+            clientHeight.value = document.documentElement.clientHeight
+            scrollHeight.value = document.documentElement.scrollHeight
+            scrollTop.value = document.documentElement.scrollTop
+        }else{
+            clientHeight.value = el.clientHeight
+            scrollHeight.value = el.scrollHeight
+            scrollTop.value = el.scrollTop
+        }
        if(scrollTop.value+clientHeight.value>=scrollHeight.value){
            console.log("到底了");
            isReachBottom.value =  true
@@ -39,11 +46,12 @@ export default function scrollListen(){
    },500)
     
     onMounted(() => {
-        window.addEventListener('scroll',scrollListenHandler)
+        if(scrollEl) el = scrollEl.value
+        el.addEventListener('scroll',scrollListenHandler)
     }),
     
     onUnmounted(() => {
-        window.removeEventListener('scroll',scrollListenHandler)
+        el.removeEventListener('scroll',scrollListenHandler)
     })
 
     
