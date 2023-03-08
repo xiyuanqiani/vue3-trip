@@ -5,6 +5,7 @@
     :titles="names"
     v-if="isShowTabControl"
     @tabItemClick="tabClick"
+    ref="tabControlRef"
     />
     <van-nav-bar
       title="房屋详情"
@@ -32,7 +33,7 @@
 <script setup>
 import {getDetailInfos} from '@/service'
 import { useRouter,useRoute } from 'vue-router';
-import {ref,computed} from 'vue'
+import {ref,computed,watch} from 'vue'
 import scrollListen from '@/hooks/scroll-listen.js'
 
 import tabControl from '@/components/tab-control/tab-control.vue'
@@ -55,7 +56,7 @@ const onClickLeft = ()=>{
 // 直接在页面中写网络请求
 const detailInfos = ref({})
 const houseId = route.params.id
-const mainPart = computed(()=>detailInfos.value.mainPart)
+const mainPart = computed(()=>detailInfos.value?.mainPart)
 getDetailInfos(houseId).then(res=>{
     detailInfos.value = res.data
 })
@@ -87,25 +88,57 @@ const isShowTabControl = computed(()=>{
 
 const sectionEls = ref({})
 const getSectionRef = (value) =>{
+  if(!value) return
   const name = value.$el.getAttribute("name")
   sectionEls.value[name] = value.$el
 }
 const names = computed(()=>{
   return Object.keys(sectionEls.value)
 })
+
+let isClick = false
+let currentDistance = -1
 const tabClick = (index) =>{
   // 拿到每个组件的对应卷去高度
   const key = Object.keys(sectionEls.value)[index]
   const el = sectionEls.value[key]
-  let instance = el.offsetTop
+  let distance = el.offsetTop
   if(index !== 0){
-    instance = instance - 44
+    distance = distance - 44
   }
+  isClick = true
+  currentDistance = distance
+
   detailRef.value.scrollTo({
-  top:instance,
+  top:distance,
   behavior: "smooth"
 })
 }
+
+// 页面滚动匹配tabControl
+const tabControlRef = ref()
+watch(scrollTop,(newValue)=>{
+  if(newValue === currentDistance){
+    isClick = false
+  }
+  if(isClick) return
+  // 拿到每个对应组件的offsetTop
+  const els = Object.values(sectionEls.value)
+  const values = els.map(el=>el.offsetTop)
+  
+  let index = values.length - 1
+  for(let i = 0;i<values.length;i++){
+    if(values[i] > newValue + 44){
+      index = i - 1
+      break
+    }
+  }
+  // console.log(index,'aaaaa');
+  // ????????????????????????!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  tabControlRef.value?.changeIndex(index)
+  // tabControlRef.value?.currentIndex = index
+  // console.log(tabControlRef.value?.currentIndex,'bbbbbb');
+})
 
 
 

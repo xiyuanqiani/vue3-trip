@@ -13,10 +13,10 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref} from "vue";
 
 const emits = defineEmits(['tabItemClick'])
-const currentIndex = ref(0);
+let currentIndex = ref(0);
 const props = defineProps({
   titles: {
     type: [],
@@ -27,6 +27,15 @@ const props = defineProps({
   currentIndex.value = index;
   emits("tabItemClick", index);
 };
+
+const changeIndex = (index)=>{
+  currentIndex.value = index
+}
+
+defineExpose({
+ currentIndex,
+  changeIndex
+})
 </script>
 
 <style  scoped>

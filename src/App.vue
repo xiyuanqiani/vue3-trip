@@ -1,10 +1,14 @@
 <template>
     <div class="app">
-        <router-view></router-view>
+        <router-view v-slot="props">
+            <keep-alive include="home">
+                <component :is="props.Component"></component>
+            </keep-alive>
+        </router-view>
         <!-- 页面留白，防止被tabbar遮挡内容 -->
         <!-- <div style="height: 5rem;"></div> -->
         <!-- <TabBar v-if="!route.meta.hideTabbar"/> -->
-        <TabBar v-if="!route.meta.hideTabbar"/>
+        <TabBar v-show="!route.meta.hideTabbar"/>
         <loading v-if="mainStore.isLoading"/>
     </div>
 </template>
