@@ -27,6 +27,20 @@
       <img src="@/assets/img/detail/icon_ensure.png" alt="">
       <div class="text">宏源旅途, 永无止境!</div>
     </div>
+      <div style="height: 5rem"></div>
+    <div class="booking-box">
+      <div class="chat">
+        <img src="@/assets/img/detail/icon_chat.png" alt="">
+        <span>聊天</span>
+      </div>
+      <div class="booking">
+        <div class="price">￥{{ pricePart?.priceModule?.product?.productPrice }}</div>
+        <div class="order">
+          <img src="@/assets/img/detail/icon_order.png" alt="">
+          <span>预订当前房源</span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -57,6 +71,7 @@ const onClickLeft = ()=>{
 const detailInfos = ref({})
 const houseId = route.params.id
 const mainPart = computed(()=>detailInfos.value?.mainPart)
+const pricePart = computed(()=>detailInfos.value?.pricePart)
 getDetailInfos(houseId).then(res=>{
     detailInfos.value = res.data
 })
@@ -170,6 +185,59 @@ watch(scrollTop,(newValue)=>{
     margin-top: 12px;
     font-size: 12px;
     color: #7688a7;
+  }
+}
+.booking-box{
+  height: 55px;
+  background-color: #fff;
+  display: flex;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  .chat{
+    display: flex;
+    width: 15vw;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-right: 2px solid #6d7680;
+    img{
+      width: 25px;
+      height: 25px;
+      margin-bottom: 5px;
+    }
+  }
+  .booking{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+    
+    .price{
+      font-size: 20px;
+      color: var(--primary--color);
+      font-weight: bold;
+      margin-left: 20px;
+    }
+    .order{
+      width: 150px;
+      height: 100%;
+      background-color: var(--primary--color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img{
+        width: 18px;
+        height: 18px;
+        margin-right: 5px;
+      }
+      span{
+        font-size: 18px;
+        color: #fff;
+      }
+    }
   }
 }
 </style>
