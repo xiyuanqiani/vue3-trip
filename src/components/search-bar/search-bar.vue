@@ -1,5 +1,6 @@
 <template>
     <div class="search">
+      <div class="city" v-if="route.path==='/search'">{{ currentCity.cityName }}</div>
         <div class="select-time">
             <div class="item start">
                 <div class="name">住</div>
@@ -13,7 +14,7 @@
         <div class="content">
             <div class="keyword">关键字/位置/名宿</div>
         </div>
-        <div class="right">
+        <div class="right" v-if="route.path !=='/search'">
             <i class="icon-search"></i>
         </div>
     </div>
@@ -21,13 +22,19 @@
 
 <script setup>
 import { storeToRefs } from 'pinia';
+import { useRoute } from 'vue-router';
 import {computed} from 'vue'
 import {formatMonthDay} from '@/utils/format_date.js'
 import useMain from '../../stores/modules/main';
+import useCity from '../../stores/modules/city';
 const mainStore = useMain()
+const cityStore = useCity()
+const {currentCity} = storeToRefs(cityStore)
 const {startDate,endDate} = storeToRefs(mainStore)
 const startDateStr = computed(()=>formatMonthDay(startDate.value,"MM.DD"))
 const endDateStr = computed(()=>formatMonthDay(endDate.value,"MM.DD"))
+
+const route = useRoute()
 
 </script>
 
@@ -37,8 +44,8 @@ const endDateStr = computed(()=>formatMonthDay(endDate.value,"MM.DD"))
   flex-direction: row;
   align-items: center;
 
-  height: 45px;
-  line-height: 45px;
+  height: 35px;
+  line-height: 35px;
 
   padding: 0 10px;
   font-size: 14px;
@@ -46,6 +53,10 @@ const endDateStr = computed(()=>formatMonthDay(endDate.value,"MM.DD"))
 
   border-radius: 6px;
   background: #f2f4f6;
+  .city{
+    text-align: center;
+    margin-right: 5px;
+  }
 
   .left {
     // max-width: 80px;
@@ -105,6 +116,7 @@ const endDateStr = computed(()=>formatMonthDay(endDate.value,"MM.DD"))
     padding: 0 6px;
     text-align: left;
     border-left: 1px solid #fff;
+    width: 200px;
 
     .key-word {
       max-width: 155px;

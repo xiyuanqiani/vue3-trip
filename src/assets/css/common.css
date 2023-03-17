@@ -1,37 +1,65 @@
-:root{
-    --primary--color:#ff9854;
-    /* 全局修改变量 */
-    /* --van-tabbar-item-icon-size:30px; */
+:root {
+  --primary--color: #ff9854;
+  /* 全局修改变量 */
+  /* --van-tabbar-item-icon-size:30px; */
 
-    /* 修改search图标颜色 */
-    --van-search-left-icon-color:var(--primary--color) !important;
-    
-    /* 搜索按钮颜色 */
-      --tjc-theme-linear-gradient:linear-gradient(90deg, #fa8c1d, #fcaf3f);
-    /* navbar主题颜色 */
-      --van-primary-color:var(--primary--color);
-      --van-nav-bar-title-text-color:var(--primary--color) !important;
+  /* 修改search图标颜色 */
+  --van-search-left-icon-color: var(--primary--color) !important;
+
+  /* 搜索按钮颜色 */
+  --tjc-theme-linear-gradient: linear-gradient(90deg, #fa8c1d, #fcaf3f);
+  /* navbar主题颜色 */
+  --van-primary-color: var(--primary--color);
+  --van-nav-bar-title-text-color: var(--primary--color) !important;
+  /* sidebar */
+  --van-sidebar-width: 112px !important;
+  --van-sidebar-font-size: 14px !important;
+  --van-sidebar-text-color: #333 !important;
+  --van-sidebar-selected-text-color: var(--primary-color) !important;
+  --van-sidebar-background-color: #f8f8f8 !important;
+  --van-sidebar-selected-border-width: 4px !important;
+  --van-sidebar-selected-border-height: 4px !important;
+
+  --van-search-input-height: 30px !important;
+  --van-search-padding: 10px !important;
+  --van-search-left-icon-color: var(--primary-color) !important;
 }
 
-body{
-    font-size: 14px;
+body {
+  font-size: 14px;
 }
 
 /* 利用css跳转到city时隐藏tabbar */
-.top-page{
-    position: relative;
-    height: 100vh;
-    z-index: 9;
-    background-color: #fff;
-    overflow-y: auto;
+.top-page {
+  position: relative;
+  height: 100vh;
+  z-index: 9;
+  background-color: #fff;
+  overflow-y: auto;
 }
-.bottom-gray-line{
-    border-bottom: 1px solid #f3f3f3;
+
+.bottom-gray-line {
+  border-bottom: 1px solid #f3f3f3;
 }
 
 .icon_check {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    background: url(../img/detail/icon_check.png) 0 0 / 100% 100%;
-  }
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background: url(../img/detail/icon_check.png) 0 0 / 100% 100%;
+}
+
+.ellipsis-text-1 {
+  overflow: hidden;
+  word-wrap: normal;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ellipsis-text-2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
